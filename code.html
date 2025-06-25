@@ -567,7 +567,7 @@ pre[class*="language-"] > code[class*="language-"] {
             <label class="language-tag" for="html">HTML</label>
             <label class="language-tag" for="css">CSS</label>
             <label class="language-tag" for="js">JavaScript</label>
-            <label class="language-tag">includes</label>
+            <label class="language-tag" for="inc">includes</label>
         </div>
 
         <div class="code-content">
@@ -591,7 +591,10 @@ pre[class*="language-"] > code[class*="language-"] {
                     </pre>
                 </div>
                 <div id="code-inc">
-                    Text.
+                    <textarea id="inc-code" spellcheck="false" oninput="update(this.value, 4); sync_scroll(this, 4);" onscroll="sync_scroll(this, 4);" onkeydown="check_tab(this, event, 4);" onkeyup="run()"></textarea>
+                    <pre id="highlighting3" aria-hidden="true">
+                        <code class="language-html" id="highlighting-content4"></code>
+                    </pre>
                 </div>
             </div>
             <iframe id="output"></iframe>
@@ -662,10 +665,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Fetch HTML, CSS and JS in parallel
     Promise.all([
-        loadFile("html", "html", "html-code", 1),
-        loadFile("css",  "css",  "css-code",  2),
-        loadFile("js",   "js",   "js-code",   3),
-        loadFile("inc",  "inc",  "inc-code",  4),
+        loadFile("html",     "html", "html-code", 1),
+        loadFile("css",      "css",  "css-code",  2),
+        loadFile("js",       "js",   "js-code",   3),
+        loadFile("includes", "html", "inc-code",  4),
     ]).then(() => {
         run();
     });
@@ -680,7 +683,8 @@ document.getElementById("copy-btn").addEventListener("click", () => {
     const map = {
         "1": "html-code",
         "2": "css-code",
-        "3": "js-code"
+        "3": "js-code",
+        "4": "inc-code"
     };
 
     const textareaId = map[selected.value];
@@ -713,19 +717,21 @@ function run() {
     const htmlCode = document.querySelector('#html-code').value;
     const cssCode = document.querySelector('#css-code').value;
     const jsCode = document.querySelector('#js-code').value;
+    const incCode = document.querySelector('#inc-code').value;
     const output = document.querySelector('#output');
 
-    const fullContent = `
-        <html>
-        <head>
-        <style>${cssCode}</style>
-        </head>
-        <body>
-        ${htmlCode}
-        <script>${jsCode}<\/script>
-        </body>
-        </html>
-    `;
+const fullContent = `
+<html>
+<head>
+<style>${cssCode}</style>
+${incCode}
+</head>
+<body>
+${htmlCode}
+<script>${jsCode}<\/script>
+</body>
+</html>
+`;
 
     // Reset the iframe by writing a new document
     output.srcdoc = fullContent;
