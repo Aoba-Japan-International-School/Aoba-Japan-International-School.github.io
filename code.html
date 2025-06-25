@@ -561,11 +561,13 @@ pre[class*="language-"] > code[class*="language-"] {
         <input type="radio" id="html" name="lang" value="1" checked />
         <input type="radio" id="css" name="lang" value="2" />
         <input type="radio" id="js" name="lang" value="3" />
+        <input type="radio" id="inc" name="lang" value="4" />
 
         <div class="code-footer">
             <label class="language-tag" for="html">HTML</label>
             <label class="language-tag" for="css">CSS</label>
             <label class="language-tag" for="js">JavaScript</label>
+            <label class="language-tag">includes</label>
         </div>
 
         <div class="code-content">
@@ -587,6 +589,9 @@ pre[class*="language-"] > code[class*="language-"] {
                     <pre id="highlighting3" aria-hidden="true">
                         <code class="language-js" id="highlighting-content3"></code>
                     </pre>
+                </div>
+                <div id="code-inc">
+                    Text.
                 </div>
             </div>
             <iframe id="output"></iframe>
@@ -660,6 +665,7 @@ document.addEventListener("DOMContentLoaded", () => {
         loadFile("html", "html", "html-code", 1),
         loadFile("css",  "css",  "css-code",  2),
         loadFile("js",   "js",   "js-code",   3),
+        loadFile("inc",  "inc",  "inc-code",  4),
     ]).then(() => {
         run();
     });
