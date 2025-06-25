@@ -45,6 +45,7 @@ code {
 .code-container > input#html:checked ~ .code-content #code-html { display: block; }
 .code-container > input#css:checked ~  .code-content #code-css  { display: block; }
 .code-container > input#js:checked ~   .code-content #code-js   { display: block; }
+.code-container > input#inc:checked ~  .code-content #code-inc   { display: block; }
 
 .code-header {
     background: #2d2d2d;
@@ -152,7 +153,8 @@ code {
 
 input[id="html"]:checked ~ div > label[for="html"],
 input[id="css"]:checked ~ div > label[for="css"],
-input[id="js"]:checked ~ div > label[for="js"] {
+input[id="js"]:checked ~ div > label[for="js"],
+input[id="inc"]:checked ~ div > label[for="inc"] {
     color: #24425a;
     background-color: #569cd6;
 }
