@@ -194,8 +194,8 @@ input[id="js"]:checked ~ div > label[for="js"] {
 
 /* Please see the article */
 
-#html-code, #css-code, #js-code,
-#highlighting1, #highlighting2, #highlighting3 {
+#html-code, #css-code, #js-code, #inc-code,
+#highlighting1, #highlighting2, #highlighting3, #highlighting4 {
   /* Both elements need the same text and space styling so they are directly on top of each other */
   margin: 0;
   padding: 0;
@@ -205,9 +205,9 @@ input[id="js"]:checked ~ div > label[for="js"] {
 }
 
 
-#html-code, #css-code, #js-code,
-#highlighting1, #highlighting2, #highlighting3,
-#highlighting1 *, #highlighting2 *, #highlighting3 * {
+#html-code, #css-code, #js-code, #inc-code,
+#highlighting1, #highlighting2, #highlighting3, #highlighting4,
+#highlighting1 *, #highlighting2 *, #highlighting3 *, #highlighting4 * {
   /* Also add text styles to highlighing tokens */
   font-size: 0.75rem !important;
   font-family: monospace !important;
@@ -216,8 +216,8 @@ input[id="js"]:checked ~ div > label[for="js"] {
 }
 
 
-#html-code, #css-code, #js-code,
-#highlighting1, #highlighting2, #highlighting3 {
+#html-code, #css-code, #js-code, #inc-code,
+#highlighting1, #highlighting2, #highlighting3, #highlighting4 {
   /* In the same place */
   position: absolute;
   top: 0;
@@ -229,35 +229,35 @@ input[id="js"]:checked ~ div > label[for="js"] {
 
 /* Move the textarea in front of the result */
 
-#html-code, #css-code, #js-code {
+#html-code, #css-code, #js-code, #inc-code {
   z-index: 1;
 }
-#highlighting1, #highlighting2, #highlighting3 {
+#highlighting1, #highlighting2, #highlighting3, #highlighting4 {
   z-index: 0;
 }
 
 
 /* Make textarea almost completely transparent */
 
-#html-code, #css-code, #js-code {
+#html-code, #css-code, #js-code, #inc-code {
   color: transparent;
   background: transparent;
   caret-color: white; /* Or choose your favourite color */
 }
 
 /* Can be scrolled */
-#html-code, #css-code, #js-code {
+#html-code, #css-code, #js-code, #inc-code {
   overflow: auto;
   white-space: pre; /* Allows textarea to scroll horizontally */
 }
 
-#highlighting1, #highlighting2, #highlighting3 {
+#highlighting1, #highlighting2, #highlighting3, #highlighting4 {
   overflow: auto;
   white-space: nowrap; /* Allows textarea to scroll horizontally */
 }
 
 /* No resize on textarea */
-#html-code, #css-code, #js-code {
+#html-code, #css-code, #js-code, #inc-code {
   resize: none;
 }
 
