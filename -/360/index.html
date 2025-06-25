@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Virtual Tours</title>
+<!-- Load Pannellum CSS from cdnjs for consistency and alternative -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pannellum/2.5.6/pannellum.css" />
+<!-- Load Open Sans font from Google Fonts for a UI-friendly look -->
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Load Tailwind CSS from CDN for modern styling -->
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+/* Ensure Open Sans font is used for the entire body and reset margin */
+body {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif; /* Changed to Open Sans */
+    background-color: #f3f4f6; /* Tailwind gray-100 */
+    padding: 1rem; /* Tailwind p-4 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Styling for the container holding the viewer and splash screen */
+.viewer-container {
+    position: relative;
+    width: 100%; /* Full width within max-w-4xl */
+    max-width: 64rem; /* Tailwind max-w-4xl */
+    height: 400px;
+    margin-bottom: 2rem; /* Tailwind mb-8 */
+    border-radius: 0.5rem; /* Tailwind rounded-lg */
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Tailwind shadow-lg */
+    border: 1px solid #d1d5db; /* Tailwind border-gray-300 */
+}
+
+/* Splash screen styling */
+.splash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8); /* black with some transparency */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    z-index: 10; /* Ensure it overlays the viewer */
+    border-radius: 0.5rem; /* Match container border-radius */
+}
+
+.splash h2 {
+    margin-bottom: 1rem; /* Tailwind mb-4 (approx) */
+    font-size: 14px; /* Changed to 14px as requested */
+    font-weight: bold;
+    line-height: 1.3;
+    font-family: 'Open Sans', sans-serif; /* Ensure explicit font for headers */
+}
+
+.splash p {
+    margin-bottom: 1.5rem; /* Tailwind mb-6 (approx) */
+    font-size: 14px; /* Changed to 14px */
+    opacity: 0.9;
+    font-family: 'Open Sans', sans-serif; /* Ensure explicit font for paragraphs */
+}
+
+.splash button {
+    /* Updated button styles */
+    border: none;
+    padding: 0.625rem 1.25rem; /* Tailwind py-2.5 px-5 */
+    font-size: 14px; /* Changed to 14px */
+    color: white;
+    border-radius: 0.625rem; /* Changed to 0.625rem */
+    background: linear-gradient(90deg, rgba(107, 182, 71, 0.80) 9%, rgba(37, 163, 75, 0.90) 66%); /* Updated gradient */
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out; /* Smooth transition for opacity */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Tailwind shadow-sm */
+    font-family: 'Open Sans', sans-serif; /* Ensure explicit font for buttons */
+}
+
+.splash button:hover {
+    opacity: 0.9; /* Slightly dim on hover */
+}
+
+/* Make Pannellum hotspot text visible and styled */
+/* Applying these styles directly to the span within the pannellum viewer */
+.pnlm-hotspot span {
+    visibility: visible !important;
+    font-size: 0.7em; /* Smaller font for better fit */
+    color: white; /* White text for better contrast on images */
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background for readability */
+    padding: 4px 8px; /* Padding for the text */
+    border-radius: 6px; /* Rounded corners for the text background */
+    text-shadow: 0 0 3px rgba(0,0,0,0.8); /* Add text shadow for better readability */
+    font-family: 'Open Sans', sans-serif; /* Ensure hotspot text also uses Open Sans */
+}
+
+/* Scene title overlay (this style is no longer used since the div is removed) */
+/*
+.scene-title {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 1em;
+    background: rgba(0,0,0,0.5);
+    padding: 6px 12px;
+    border-radius: 6px;
+    pointer-events: none;
+    user-select: none;
+    max-width: 90%;
+    text-align: center;
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+    z-index: 11;
+}
+*/
+
+/* Dropdown container & styling */
+.scene-selector {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 12; /* Ensure it's above everything else */
+}
+
+.scene-selector select {
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    font-size: 14px; /* Changed to 14px */
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif; /* Consistent font */
+    min-width: 180px;
+    -webkit-appearance: none; /* Remove default dropdown arrow for custom styling */
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Custom dropdown arrow */
+    background-repeat: no-repeat;
+    background-position: right 8px top 50%;
+    background-size: 16px;
+}
+
+.scene-selector select:hover,
+.scene-selector select:focus {
+    background: rgba(0,0,0,0.8);
+    outline: none;
+}
+</style>
+</head>
+<body>
+
+<h1 class="text-3xl font-bold text-gray-800 mb-6 mt-4 rounded-lg bg-white p-4 shadow-md w-full max-w-4xl text-center" style="font-family: 'Open Sans', sans-serif;">Bunkyo Campus Virtual Tour</h1>
+<div class="viewer-container" id="container-bunkyo">
+    <div id="Bunkyo" style="width: 100%; height: 100%;"></div>
+    <div class="scene-selector" id="selector-bunkyo">
+        <select aria-label="Choose a room for Bunkyo Campus"></select>
+    </div>
+    <div class="splash" id="splash-bunkyo">
+        <h2>Welcome to Aoba-Japan International School — Bunkyo Campus</h2>
+        <p>Explore our vibrant campus spaces in this virtual tour.<br>Use swipe, click, or the room list to navigate.</p>
+        <button onclick="enterTour('bunkyo')">Enter Tour</button>
+    </div>
+</div>
+
+<h1 class="text-3xl font-bold text-gray-800 mb-6 mt-4 rounded-lg bg-white p-4 shadow-md w-full max-w-4xl text-center" style="font-family: 'Open Sans', sans-serif;">Hikarigaoka Campus Virtual Tour</h1>
+<div class="viewer-container" id="container-hikarigaoka">
+    <div id="Hikarigaoka" style="width: 100%; height: 100%;"></div>
+    <div class="scene-selector" id="selector-hikarigaoka">
+        <select aria-label="Choose a room for Hikarigaoka Campus"></select>
+    </div>
+    <div class="splash" id="splash-hikarigaoka">
+        <h2>Welcome to Aoba-Japan International School — Hikarigaoka Campus</h2>
+        <p>Explore our vibrant campus spaces in this virtual tour.<br>Use swipe, click, or the room list to navigate.</p>
+        <button onclick="enterTour('hikarigaoka')">Enter Tour</button>
+    </div>
+</div>
+
+<h1 class="text-3xl font-bold text-gray-800 mb-6 mt-4 rounded-lg bg-white p-4 shadow-md w-full max-w-4xl text-center" style="font-family: 'Open Sans', sans-serif;">Meguro Campus Virtual Tour</h1>
+<div class="viewer-container" id="container-meguro">
+    <div id="Meguro" style="width: 100%; height: 100%;"></div>
+    <div class="scene-selector" id="selector-meguro">
+        <select aria-label="Choose a room for Meguro Campus"></select>
+    </div>
+    <div class="splash" id="splash-meguro">
+        <h2>Welcome to Aoba-Japan International School — Meguro Campus</h2>
+        <p>Explore our vibrant campus spaces in this virtual tour.<br>Use swipe, click, or the room list to navigate.</p>
+        <button onclick="enterTour('meguro')">Enter Tour</button>
+    </div>
+</div>
+
+<!-- Load Pannellum JavaScript from CDN -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
+<script>
+
+// Disable right-click context menu for a cleaner user experience
+document.oncontextmenu = document.body.oncontextmenu = function() { return false; };
+
+// Initialize Pannellum viewer for 'Hikarigaoka'
+const viewerHikarigaoka = pannellum.viewer('Hikarigaoka', {
+    "default": {
+        "firstScene": "field",
+        "sceneFadeDuration": 1000,
+        "autoLoad": true,
+        "showFullscreenCtrl": true,
+        "showSceneName": false, // hides pannellum's default scene title display
+        "crossOrigin": "anonymous",
+        "showAbout": false // Removed the "About Pannellum" text from the bottom right
+    },
+    "scenes": {
+        "1fclass": {
+            "title": "First Floor Classroom",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Hikarigaoka_L1RoomR.jpeg",
+            "hotSpots": [
+                {"pitch": 0,"yaw": 110,"type": "scene","text": "Cafeteria (1F)","sceneId": "cafeteria"},
+                {"pitch": 0,"yaw": -110,"type": "scene","text": "Library (1F)","sceneId": "library"}
+            ]
+        },
+        "2fclass": {
+            "title": "Second Floor Classroom",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Hikarigaoka_L2RoomR.jpg",
+            "hotSpots": [
+                {"pitch": -12,"yaw": -23,"type": "scene","text": "East Library ↓","sceneId": "library"}, // Downward arrow
+                {"pitch": -3,"yaw": -151,"type": "scene","text": "Art Room (2F)","sceneId": "art"},
+                {"pitch": 5,"yaw": -50,"type": "scene","text": "Third Floor Classroom ↑","sceneId": "3fclass"} // Upward arrow
+            ]
+        },
+        "3fclass": {
+            "title": "Third Floor Classroom",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Hikarigaoka_GlassWallRoom1R.jpeg",
+            "hotSpots": [
+                {"pitch": -15,"yaw": -115,"type": "scene","text": "Second Floor Classroom ↓","sceneId": "2fclass"}, // Downward arrow
+                {"pitch": 5,"yaw": -122,"type": "scene","text": "Music Room (3F)","sceneId": "music"},
+                {"pitch": -3,"yaw": 128,"type": "scene","text": "Science Room (3F)","sceneId": "science"}
+            ]
+        },
+        "art": {
+            "title": "Art Room",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Hikarigaoka_ArtroomR.jpg",
+            "hotSpots": [
+                {"pitch": -3,"yaw": 155,"type": "scene","text": "Second Floor Classroom (2F)","sceneId": "2fclass"}
+            ]
+        },
+        "cafeteria": {
+            "title": "Cafeteria",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Hikarigaoka_Cafeteria1R.jpg",
+            "hotSpots": [
+                {"pitch": -5,"yaw": -18,"type": "scene","text": "Soccer Field","sceneId": "field"},
+                {"pitch": -2,"yaw": -127,"type": "scene","text": "First Floor Classrooms (1F)","sceneId": "1fclass"},
+                {"pitch": 0, "yaw": -250, "type": "scene", "text": "Second Floor Classroom ↑", "sceneId": "2fclass"} // Yaw adjusted to -250
+            ]
+        },
+        "field": {
+            "title": "Soccer Field",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Hikarigaoka_SoccerFieldR.jpg",
+            "hotSpots": [
+                {"pitch": 0,"yaw": -90,"type": "scene","text": "Gym","sceneId": "gym"},
+                {"pitch": 0,"yaw": 60,"type": "scene","text": "Library (1F)","sceneId": "library"},
+                {"pitch": 0, "yaw": -15, "type": "scene", "text": "Cafeteria", "sceneId": "cafeteria"}
+            ]
+        },
+        "gym": {
+            "title": "Gymnasium",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Hikarigaoka_GymR.jpg",
+            "hotSpots": [
+                {"pitch": 0,"yaw": -90,"type": "scene","text": "Soccer Field","sceneId": "field"}
+            ]
+        },
+        "kindergarten": {
+            "title": "Kindergarten Classroom",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Hikarigaoka_KinderR.jpg",
+            "hotSpots": [
+                {"pitch": 0,"yaw": -50,"type": "scene","text": "Soccer Field","sceneId": "field"},
+                {"pitch": 0,"yaw": 16,"type": "scene","text": "Library (1F)","sceneId": "library"}
+            ]
+        },
+        "library": {
+            "title": "East Library",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Hikarigaoka_LibraryR.jpg",
+            "hotSpots": [
+                {"pitch": 0,"yaw": -90,"type": "scene","text": "Soccer Field","sceneId": "field"},
+                {"pitch": -8,"yaw": 140,"type": "scene","text": "Kindergarten Classroom","sceneId": "kindergarten"},
+                {"pitch": -2,"yaw": 45,"type": "scene","text": "First Floor Classroom (1F)","sceneId": "1fclass"},
+                {"pitch": 4,"yaw": 106,"type": "scene","text": "Second Floor Classroom ↑","sceneId": "2fclass"} // Upward arrow
+            ]
+        },
+        "music": {
+            "title": "Music Room",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Hikarigaoka_MusicRoom1R.jpg",
+            "hotSpots": [
+                {"pitch": -1,"yaw": 55,"type": "scene","text": "Third Floor Classroom (3F)","sceneId": "3fclass"},
+                {"pitch": -24,"yaw": 47,"type": "scene","text": "Second Floor Classroom ↓","sceneId": "2fclass"} // Downward arrow
+            ]
+        },
+        "science": {
+            "title": "Science Room",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Hikarigaoka_ScienceRoom1R-1.jpg",
+            "hotSpots": [
+                {"pitch": 0,"yaw": -50,"type": "scene","text": "Third Floor Classroom (3F)","sceneId": "3fclass"}
+            ]
+        }
+    }
+});
+
+// Initialize Pannellum viewer for 'Bunkyo'
+const viewerBunkyo = pannellum.viewer('Bunkyo', {
+    "default": {
+        "firstScene": "entrance",
+        "sceneFadeDuration": 1000,
+        "autoLoad": true,
+        "showFullscreenCtrl": true,
+        "showSceneName": false,
+        "crossOrigin": "anonymous",
+        "showAbout": false // Removed the "About Pannellum" text from the bottom right
+    },
+    "scenes": {
+        "entrance": {
+            "title": "Entrance",
+            "type": "equirectangular",
+            "compass": true,
+            "northOffset": 0,
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Bunkyo_Lobby_360.jpg",
+            "hotSpots": [
+                {"pitch": -10,"yaw": 72,"type": "scene","text": "Theater Room","sceneId": "theater"},
+                {"pitch": 6,"yaw": 93,"type": "scene","text": "Cafeteria","sceneId": "cafeteria"},
+                {"pitch": -10,"yaw": 119,"type": "scene","text": "Multimedia Room","sceneId": "multimedia"},
+                {"pitch": -10,"yaw": -89,"type": "scene","text": "Second Floor Classroom ↑","sceneId": "2fclassroom"}, // Upward arrow
+                // New hotspot for Music Room in Bunkyo Entrance
+                {"pitch": -10,"yaw": -105,"type": "scene","text": "Music Room ↓", "sceneId": "music"} // Adjusted yaw and added downward arrow
+            ]
+        },
+        "2fclassroom": {
+            "title": "Second Floor Classroom",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/07/Bunkyo_Classroom_360.jpg",
+            "hotSpots": [
+                {"pitch": 12,"yaw": -120,"type": "scene","text": "Science Classroom ↑","sceneId": "science"}, // Upward arrow
+                {"pitch": -12,"yaw": -120,"type": "scene","text": "Entrance ↓","sceneId": "entrance"}, // Downward arrow
+                // Adjusted position of Third Floor Classroom hotspot
+                {"pitch": 10, "yaw": -90, "type": "scene", "text": "Third Floor Classroom ↑", "sceneId": "3fclassroom"} // Added upward arrow
+            ]
+        },
+        "cafeteria": {
+            "title": "Cafeteria",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Bunkyo_CafeteriaGalleryR-1.jpg",
+            "hotSpots": [
+                {"pitch": -10,"yaw": -62,"type": "scene","text": "Theater Room","sceneId": "theater"},
+                {"pitch": 6,"yaw": -83,"type": "scene","text": "Entrance","sceneId": "entrance"},
+                {"pitch": -10,"yaw": -109,"type": "scene","text": "Multimedia Room","sceneId": "multimedia"},
+                {"pitch": -10,"yaw": 85,"type": "scene","text": "Music Room ↓","sceneId": "music"}, // Downward arrow
+                {"pitch": 10,"yaw": 85,"type": "scene","text": "Second Floor Classroom ↑","sceneId": "2fclassroom"} // Upward arrow
+            ]
+        },
+        "3fclassroom": {
+            "title": "Third Floor Classroom",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Bunkyo_Room1R-1.jpg",
+            "hotSpots": [
+                {"pitch": 8,"yaw": 55,"type": "scene","text": "Art Room","sceneId": "art"},
+                {"pitch": -12,"yaw": 140,"type": "scene","text": "Second Floor Classroom ↓","sceneId": "2fclassroom"}, // Downward arrow
+                {"pitch": 12,"yaw": 140,"type": "scene","text": "Science Room","sceneId": "science"}
+            ]
+        },
+        "theater": {
+            "title": "Theater Room",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Bunkyo_Box_theatre2R-1.jpg",
+            "hotSpots": [
+                {"pitch": 0,"yaw": -70,"type": "scene","text": "Entrance","sceneId": "entrance"},
+                {"pitch": 0,"yaw": -155,"type": "scene","text": "Cafeteria","sceneId": "cafeteria"}
+            ]
+        },
+        "multimedia": {
+            "title": "Multimedia Room",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Bunkyo_Gallery_Room_360_v1.jpg",
+            "hotSpots": [
+                {"pitch": 0,"yaw": -80,"type": "scene","text": "Cafeteria","sceneId": "cafeteria"},
+                {"pitch": 0,"yaw": -115,"type": "scene","text": "Entrance","sceneId": "entrance"}
+            ]
+        },
+        "art": {
+            "title": "Art Room",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Bunkyo_Art_Room_360.jpg",
+            "hotSpots": [
+                {"pitch": 0,"yaw": 120,"type": "scene","text": "Third Floor Classroom","sceneId": "3fclassroom"}, // Adjusted yaw
+                {"pitch": 0,"yaw": -150,"type": "scene","text": "Japanese Room", "sceneId": "japanese"} 
+            ]
+        },
+        "music": {
+            "title": "Music Room",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Bunkyo_Music_R.jpg",
+            "hotSpots": [
+                {"pitch": 0,"yaw": -130,"type": "scene","text": "Cafeteria ↑","sceneId": "cafeteria"}, // Upward arrow
+                {"pitch": -10, "yaw": -60, "type": "scene", "text": "Entrance ↑", "sceneId": "entrance"} // Adjusted yaw and added upward arrow
+            ]
+        },
+        "japanese": {
+            "title": "Japanese Room",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Hikarigaoka_WashitsuR.jpg",
+            "hotSpots": [
+                {"pitch": 0,"yaw": 90,"type": "scene","text": "Art Room","sceneId": "art"}
+            ]
+        },
+        "science": {
+            "title": "Science Room",
+            "type": "equirectangular",
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Bunkyo_Science_Room_360.jpg",
+            "hotSpots": [
+                {"pitch": 0,"yaw": 90,"type": "scene","text": "Third Floor Classroom","sceneId": "3fclassroom"}
+            ]
+        }
+    }
+});
+
+// Initialize Pannellum viewer for 'Meguro'
+const viewerMeguro = pannellum.viewer('Meguro', {
+    "default": {
+        "firstScene": "1F",
+        "sceneFadeDuration": 1000,
+        "autoLoad": true,
+        "showFullscreenCtrl": true,
+        "showSceneName": false,
+        "crossOrigin": "anonymous",
+        "showAbout": false // Removed the "About Pannellum" text from the bottom right
+    },
+    "scenes": {
+        "1F": {
+            "title": "Meguro Level 1 Classroom",
+            "type": "equirectangular",
+            "compass": true,
+            "northOffset": 0,
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Meguro_LargeRoom1R.jpg",
+            "hotSpots": [
+                {
+                    "pitch": 0,
+                    "yaw": -150,
+                    "type": "scene",
+                    "text": "Meguro Level 2 Classroom ↑", // 1F to 2F is UP
+                    "sceneId": "2F"
+                }
+            ]
+        },
+        "2F": {
+            "title": "Meguro Level 2 Classroom",
+            "type": "equirectangular",
+            "compass": true,
+            "northOffset": 0,
+            "panorama": "https://www.japaninternationalschool.com/wp-content/uploads/2024/08/Aoba360_Meguro_Sunflower2R.jpg",
+            "hotSpots": [
+                {
+                    "pitch": 0,
+                    "yaw": 23,
+                    "type": "scene",
+                    "text": "Meguro Level 1 Classroom ↓", // 2F to 1F is DOWN
+                    "sceneId": "1F"
+                }
+            ]
+        }
+    }
+});
+
+// Function to hide the splash overlay for a given campus
+function enterTour(campus) {
+    const splash = document.getElementById(`splash-${campus}`);
+    if (!splash) return;
+    splash.style.display = 'none'; // Hide the splash screen
+}
+
+// Function to populate scene dropdown
+function populateSceneSelector(viewer, selectorId, orderArray) {
+    const selectorDiv = document.getElementById(selectorId);
+    if (!selectorDiv) return;
+
+    const select = selectorDiv.querySelector('select');
+    const scenes = viewer.getConfig().scenes;
+    // Clear existing options (if any)
+    select.innerHTML = '';
+
+    // Create an array of scene objects to sort
+    const sortedScenes = Object.keys(scenes)
+        .map(sceneId => ({ id: sceneId, title: scenes[sceneId].title || sceneId }))
+        .sort((a, b) => {
+            const indexA = orderArray.indexOf(a.title);
+            const indexB = orderArray.indexOf(b.title);
+            if (indexA === -1 && indexB === -1) return 0; // Both not in order, maintain current
+            if (indexA === -1) return 1; // A not in order, B is
+            if (indexB === -1) return -1; // B not in order, A is
+            return indexA - indexB; // Sort by custom order
+        });
+
+    // Add sorted scenes as options
+    sortedScenes.forEach(scene => {
+        const option = document.createElement('option');
+        option.value = scene.id;
+        option.text = scene.title;
+        select.appendChild(option);
+    });
+
+    // Set initial selection
+    select.value = viewer.getScene();
+
+    // On change, load the selected scene
+    select.addEventListener('change', (e) => {
+        const sceneId = e.target.value;
+        viewer.loadScene(sceneId);
+    });
+
+    // Update dropdown when scene changes (to keep in sync with hotspot navigation)
+    viewer.on('scenechange', () => {
+        select.value = viewer.getScene();
+    });
+}
+
+// Define the desired order for each campus
+const bunkyoOrder = [
+    "Music Room", "Entrance", "Theater Room", "Multimedia Room", "Cafeteria",
+    "Second Floor Classroom", "Third Floor Classroom", "Science Room", "Art Room", "Japanese Room"
+];
+const hikarigaokaOrder = [
+    "Soccer Field", "Gymnasium", "Cafeteria", "East Library",
+    "Kindergarten Classroom", "First Floor Classroom", "Second Floor Classroom",
+    "Art Room", "Third Floor Classroom", "Music Room", "Science Room"
+];
+const meguroOrder = [
+    "Meguro Level 1 Classroom", "Meguro Level 2 Classroom"
+];
+
+// Initialize dropdowns with custom order
+populateSceneSelector(viewerBunkyo, 'selector-bunkyo', bunkyoOrder);
+populateSceneSelector(viewerHikarigaoka, 'selector-hikarigaoka', hikarigaokaOrder);
+populateSceneSelector(viewerMeguro, 'selector-meguro', meguroOrder);
+
+</script>
+
+</body>
+</html>
