@@ -1,0 +1,364 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+}
+
+body {
+    background: #FFFFFF; /* Background is white */
+    font-family: 'Open Sans', sans-serif; /* Open Sans font */
+    color: #222; /* Changed text color to darker for better contrast on white background */
+    font-size: 14px;
+    overflow: hidden; /* Hide scrollbars initially to prevent content flash before splash screen disappears */
+}
+
+a {
+    color: #6BB647; /* Unclicked year color */
+    text-decoration: none;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    -ms-transition: 0.5s;
+    transition: 0.5s;
+}
+    a:hover,
+    a.selected {
+        color: #25A34B; /* Clicked year color */
+    }
+
+h1, h2, h4, h5, h6 {
+    text-align: center;
+    color: #333; /* Adjusted for white background */
+    text-shadow: rgba(0, 0, 0, 0.2) 1px 1px 2px; /* Slightly lighter shadow */
+    margin-bottom: 5px;
+    text-transform: uppercase; /* ALL CAPS LOCK for general headings */
+}
+    h1 {
+        font-size: 18px;
+    }
+    h2 {
+        font-size: 14px;
+    }
+/* The main title for the history, previously appeared after splash, now removed */
+/* .history-main-title {
+    font-size: 28px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #25A34B;
+    text-shadow: rgba(0, 0, 0, 0.2) 1px 1px 2px;
+    opacity: 0;
+    transition: opacity 1s ease;
+    text-align: center;
+    text-transform: uppercase;
+} */
+
+
+/* Timeline Container - No Box Appearance */
+#timeline {
+    overflow: hidden; /* Important for containing floated children */
+    margin: 40px auto; /* Centers the entire timeline structure horizontally */
+    position: relative;
+    background: url('http://www.csslab.cl/ejemplos/timelinr/latest/images/dot.gif') 10px top repeat-y;
+    border-radius: 0; /* No rounded corners */
+    box-shadow: none; /* No shadow */
+    border: none; /* No stroke */
+    max-width: 500px; /* Limits the overall width for better readability */
+    height: 700px; /* Increased height to give more room */
+    opacity: 0; /* Hidden until splash screen disappears */
+    transition: opacity 1s ease;
+}
+    /* Dates List (left side) */
+    #dates {
+        width: 200px; /* Fixed width for the years column */
+        height: 700px; /* Increased height to match timeline container */
+        overflow-y: scroll; /* Allows scrolling */
+        float: left; /* Keep floated to sit next to #issues */
+        padding-top: 50px; /* Vertical offset for top content */
+        /* Hide scrollbar */
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+    /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+    #dates::-webkit-scrollbar {
+        display: none;
+    }
+
+        #dates li {
+            list-style: none;
+            width: 100%; /* Occupy full width of #dates container */
+            height: 100px; /* Each date item takes up 100px height */
+            position: relative; /* For pseudo-element positioning */
+        }
+            /* Custom dot for each year */
+            #dates li::before {
+                content: '';
+                position: absolute;
+                left: 10px; /* Aligned with the background line */
+                top: 50%;
+                transform: translateY(-50%) translateX(-50%); /* Center dot on the line */
+                width: 18px; /* Dot size */
+                height: 18px;
+                border-radius: 50%; /* Ensures full circle */
+                background-color: #F7B114; /* The color of the dot itself */
+                z-index: 1;
+                transition: all 0.3s ease;
+            }
+
+            /* Expand animation for clicked circles */
+            #dates li.selected::before {
+                animation: expandEffect 0.5s ease-out; /* Changed to expandEffect */
+                /* No persistent box-shadow here, let animation handle it */
+            }
+
+            @keyframes expandEffect { /* Renamed keyframes */
+                0% {
+                    transform: translateY(-50%) translateX(-50%) scale(1);
+                    opacity: 1;
+                    box-shadow: 0 0 0px 0px rgba(247, 177, 20, 0);
+                }
+                50% {
+                    transform: translateY(-50%) translateX(-50%) scale(1.8); /* More significant enlargement */
+                    opacity: 1; /* Fully opaque during expansion */
+                    box-shadow: 0 0 25px 12px rgba(247, 177, 20, 0.7); /* Stronger, fading glow */
+                }
+                100% {
+                    transform: translateY(-50%) translateX(-50%) scale(1);
+                    opacity: 1;
+                    box-shadow: 0 0 0px 0px rgba(247, 177, 20, 0); /* Glow fades out with scale return */
+                }
+            }
+
+            #dates a {
+                display: flex; /* Use flexbox for vertical alignment of text */
+                align-items: center; /* Vertically centers the text */
+                height: 100%; /* Make anchor fill li */
+                width: 100%; /* Make anchor fill li */
+                padding-left: 70px; /* Increased padding to ensure full year visibility */
+                position: relative; /* Allows text to flow correctly with padding */
+                z-index: 100; /* Increased z-index to ensure clickability over gradients */
+                /* Other existing link styles */
+                color: #6BB647;
+                text-decoration: none;
+                -webkit-transition: 0.5s;
+                -moz-transition: 0.5s;
+                -o-transition: 0.5s;
+                -ms-transition: 0.5s;
+                transition: 0.5s;
+            }
+            #dates a:hover,
+            #dates a.selected {
+                color: #25A34B;
+            }
+            #dates .selected {
+                font-size: 14px; /* Set to 14px */
+                font-weight: bold; /* Made bold */
+            }
+
+    /* Issues List (right side) */
+    #issues {
+        width: 300px; /* Calculated as 500px (total width) - 200px (#dates width) */
+        height: 700px; /* Increased height to match timeline container */
+        overflow: hidden; /* Only show one issue at a time */
+        float: left; /* Keep floated to sit next to #dates */
+        position: relative; /* For smooth transition of issues */
+    }
+        #issues li {
+            width: 280px; /* Adjusted to fit within #issues width (300px - 20px total horizontal margin/padding) */
+            margin: 0 auto; /* Center content horizontally within its column */
+            height: 700px; /* Each issue takes up 700px height */
+            list-style: none;
+            text-align: center;
+            box-sizing: border-box; /* Include padding in height */
+
+            /* Flexbox for vertical and horizontal centering */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Vertically centers content */
+            align-items: center; /* Horizontally centers content */
+        }
+            #issues li.selected img {
+                -webkit-transform: scale(1.1,1.1);
+                -moz-transform: scale(1.1,1.1);
+                -o-transform: scale(1.1,1.1);
+                -ms-transform: scale(1.1,1.1);
+                transform: scale(1.1,1.1);
+            }
+            #issues li img {
+                width: 200px;
+                margin: 10px auto 25px; /* Increased bottom margin to create a larger gap */
+                display: block; /* Ensures margin auto works */
+                -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF,endColorstr=#00FFFFFF)"; /* IE 8 */
+                filter: progid:DXImageTransform.Microsoft.Microsoft.gradient(startColorstr=#00FFFFFF,endColorstr=#00FFFFFF);/* IE 6 & 7 */
+                zoom: 1;
+                -webkit-transition: all 2s ease-in-out;
+                -moz-transition: all 2s ease-in-out;
+                -o-transition: all 2s ease-in-out;
+                -ms-transition: all 2s ease-in-out;
+                transition: all 2s ease-in-out;
+                -webkit-transform: scale(0.7,0.7);
+                -moz-transform: scale(0.7,0.7);
+                -o-transform: scale(0.7,0.7);
+                -ms-transform: scale(0.7,0.7);
+                transform: scale(0.7,0.7);
+                border-radius: 8px; /* Added for aesthetic */
+            }
+            #issues li h1 {
+                color: #25A34B; /* Adjusted for white background */
+                font-size: 16px; /* Year heading under illustration */
+                text-align: center;
+                text-shadow: none; /* Removed text shadow */
+                text-transform: uppercase; /* ALL CAPS LOCK for issue headings */
+            }
+            #issues li p {
+                font-size: 12px; /* Changed to 12px */
+                width: 90%; /* Occupy more width within the centered flex item */
+                margin: 10px auto; /* Centered with auto margins */
+                font-weight: normal;
+                line-height: 20px; /* Slightly adjusted line height for 12px font */
+                color: #333333; /* Changed to #333333 */
+                text-shadow: none; /* Removed text shadow as it clashes on light background */
+                text-transform: none; /* Ensure no ALL CAPS LOCK for paragraph text */
+            }
+
+    /* Gradient Overlays */
+    #grad_top,
+    #grad_bottom {
+        width: 100%; /* Stretches across the overall timeline width */
+        height: 80px;
+        position: absolute;
+        left: 0;
+        display: block;
+        z-index: 10; /* Ensures they appear on top of content */
+    }
+        #grad_top {
+            top: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+        }
+        #grad_bottom {
+            bottom: 0;
+            background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+        }
+
+    /* Navigation Buttons */
+    #next,
+    #prev {
+        position: absolute;
+        left: calc(200px + (300px / 2) - 19px); /* Positioned relative to the middle of the 'issues' section */
+        font-size: 25px;
+        width: 38px;
+        height: 22px;
+        text-indent: 0;
+        text-align: center;
+        line-height: 22px;
+        font-weight: bold;
+        overflow: hidden;
+        color: #6BB647;
+        opacity: 0.7;
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+        z-index: 20; /* Ensure buttons are clickable */
+    }
+        #next:hover,
+        #prev:hover {
+            opacity: 1;
+        }
+        #next {
+            bottom: 0;
+        }
+        #prev {
+            top: 0;
+        }
+            #next.disabled,
+            #prev.disabled {
+                opacity: 0.2;
+                cursor: default;
+            }
+
+/* Splash Screen Styles */
+#splash-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 9999;
+    transition: opacity 1s ease, visibility 1s ease;
+    text-align: center; /* Center splash content */
+}
+
+.splash-content {
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+    font-family: 'Open Sans', sans-serif; /* Ensure Open Sans for splash content */
+}
+
+.splash-content h1 {
+    font-size: 14px; /* Set to 14px */
+    margin-bottom: 1.5rem;
+    color: #25A34B; /* Updated color for "Aoba-Japan International School" */
+    text-shadow: none; /* No shadow */
+    text-transform: uppercase; /* ALL CAPS LOCK */
+}
+
+.splash-content .subtitle {
+    font-size: 14px; /* Set to 14px */
+    color: #4D4D4D; /* Updated color for "Leading Positive Change" */
+    display: block; /* Ensures subtitle is on a new line */
+    margin-top: 0.5rem; /* Space between title and subtitle */
+    text-transform: uppercase; /* ALL CAPS LOCK */
+}
+
+.logo-row {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap; /* Allow logos to wrap on smaller screens */
+}
+
+.logo-block {
+    text-align: center;
+    flex-shrink: 0; /* Prevent shrinking of logo blocks */
+}
+
+.logo-block img {
+    height: 100px; /* Increased height */
+    max-width: 120px; /* Increased max-width */
+    object-fit: contain;
+    border-radius: 8px; /* Rounded corners for logos */
+    box-shadow: none; /* No shadow */
+}
+
+#enter-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 12px; /* Set to 12px */
+    font-weight: bold; /* Make bold */
+    border: none;
+    border-radius: 0.625rem; /* Updated border-radius */
+    background: linear-gradient(90deg, rgba(107, 182, 71, 0.80) 9%, rgba(37, 163, 75, 0.90) 66%); /* Updated background gradient */
+    color: white;
+    cursor: pointer;
+    /* Changed animation delay to 0.5s for faster appearance */
+    animation: fadeIn 2s ease forwards 0.5s;
+    box-shadow: none; /* No shadow */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-transform: uppercase; /* ALL CAPS LOCK */
+    line-height: 1.2; /* Adjust line height for two lines of text */
+}
+
+#enter-button:hover {
+    background-color: rgba(37, 163, 75, 0.90); /* Adjusted hover color to match gradient end */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
