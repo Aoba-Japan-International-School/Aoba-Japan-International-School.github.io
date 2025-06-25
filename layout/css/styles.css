@@ -412,7 +412,7 @@ body > header ~ main {
 
 header > span, main {
     width: 100% !important;
-    max-width: 1200px !important;
+    /* max-width: 1200px !important; */
     margin: auto !important;
 }
 
@@ -571,7 +571,7 @@ header > span {
 
 header > span, main {
     width: 100% !important;
-    max-width: 1200px !important;
+    /* max-width: 1200px !important; */
     margin: auto !important;
 }
 
