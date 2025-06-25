@@ -1,0 +1,6 @@
+<!-- Load Pannellum CSS from cdnjs for consistency and alternative -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pannellum/2.5.6/pannellum.css" />
+<!-- Load Open Sans font from Google Fonts for a UI-friendly look -->
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Load Tailwind CSS from CDN for modern styling -->
+<script src="https://cdn.tailwindcss.com"></script>
