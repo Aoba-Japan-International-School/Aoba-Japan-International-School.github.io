@@ -16,7 +16,7 @@ const viewerHikarigaoka = pannellum.viewer('Hikarigaoka', {
         "1fclass": {
             "title": "First Floor Classroom",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Hikarigaoka_L1RoomR.jpeg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Hikarigaoka_L1RoomR.jpeg",
             "hotSpots": [
                 {"pitch": 0,"yaw": 110,"type": "scene","text": "Cafeteria (1F)","sceneId": "cafeteria"},
                 {"pitch": 0,"yaw": -110,"type": "scene","text": "Library (1F)","sceneId": "library"}
@@ -25,7 +25,7 @@ const viewerHikarigaoka = pannellum.viewer('Hikarigaoka', {
         "2fclass": {
             "title": "Second Floor Classroom",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Hikarigaoka_L2RoomR.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Hikarigaoka_L2RoomR.jpg",
             "hotSpots": [
                 {"pitch": -12,"yaw": -23,"type": "scene","text": "East Library ↓","sceneId": "library"}, // Downward arrow
                 {"pitch": -3,"yaw": -151,"type": "scene","text": "Art Room (2F)","sceneId": "art"},
@@ -35,7 +35,7 @@ const viewerHikarigaoka = pannellum.viewer('Hikarigaoka', {
         "3fclass": {
             "title": "Third Floor Classroom",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Hikarigaoka_GlassWallRoom1R.jpeg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Hikarigaoka_GlassWallRoom1R.jpeg",
             "hotSpots": [
                 {"pitch": -15,"yaw": -115,"type": "scene","text": "Second Floor Classroom ↓","sceneId": "2fclass"}, // Downward arrow
                 {"pitch": 5,"yaw": -122,"type": "scene","text": "Music Room (3F)","sceneId": "music"},
@@ -45,7 +45,7 @@ const viewerHikarigaoka = pannellum.viewer('Hikarigaoka', {
         "art": {
             "title": "Art Room",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Hikarigaoka_ArtroomR.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Hikarigaoka_ArtroomR.jpg",
             "hotSpots": [
                 {"pitch": -3,"yaw": 155,"type": "scene","text": "Second Floor Classroom (2F)","sceneId": "2fclass"}
             ]
@@ -53,7 +53,7 @@ const viewerHikarigaoka = pannellum.viewer('Hikarigaoka', {
         "cafeteria": {
             "title": "Cafeteria",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Hikarigaoka_Cafeteria1R.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Hikarigaoka_Cafeteria1R.jpg",
             "hotSpots": [
                 {"pitch": -5,"yaw": -18,"type": "scene","text": "Soccer Field","sceneId": "field"},
                 {"pitch": -2,"yaw": -127,"type": "scene","text": "First Floor Classrooms (1F)","sceneId": "1fclass"},
@@ -63,7 +63,7 @@ const viewerHikarigaoka = pannellum.viewer('Hikarigaoka', {
         "field": {
             "title": "Soccer Field",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Hikarigaoka_SoccerFieldR.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Hikarigaoka_SoccerFieldR.jpg",
             "hotSpots": [
                 {"pitch": 0,"yaw": -90,"type": "scene","text": "Gym","sceneId": "gym"},
                 {"pitch": 0,"yaw": 60,"type": "scene","text": "Library (1F)","sceneId": "library"},
@@ -73,7 +73,7 @@ const viewerHikarigaoka = pannellum.viewer('Hikarigaoka', {
         "gym": {
             "title": "Gymnasium",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Hikarigaoka_GymR.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Hikarigaoka_GymR.jpg",
             "hotSpots": [
                 {"pitch": 0,"yaw": -90,"type": "scene","text": "Soccer Field","sceneId": "field"}
             ]
@@ -81,7 +81,7 @@ const viewerHikarigaoka = pannellum.viewer('Hikarigaoka', {
         "kindergarten": {
             "title": "Kindergarten Classroom",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Hikarigaoka_KinderR.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Hikarigaoka_KinderR.jpg",
             "hotSpots": [
                 {"pitch": 0,"yaw": -50,"type": "scene","text": "Soccer Field","sceneId": "field"},
                 {"pitch": 0,"yaw": 16,"type": "scene","text": "Library (1F)","sceneId": "library"}
@@ -90,7 +90,7 @@ const viewerHikarigaoka = pannellum.viewer('Hikarigaoka', {
         "library": {
             "title": "East Library",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Hikarigaoka_LibraryR.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Hikarigaoka_LibraryR.jpg",
             "hotSpots": [
                 {"pitch": 0,"yaw": -90,"type": "scene","text": "Soccer Field","sceneId": "field"},
                 {"pitch": -8,"yaw": 140,"type": "scene","text": "Kindergarten Classroom","sceneId": "kindergarten"},
@@ -101,7 +101,7 @@ const viewerHikarigaoka = pannellum.viewer('Hikarigaoka', {
         "music": {
             "title": "Music Room",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Hikarigaoka_MusicRoom1R.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Hikarigaoka_MusicRoom1R.jpg",
             "hotSpots": [
                 {"pitch": -1,"yaw": 55,"type": "scene","text": "Third Floor Classroom (3F)","sceneId": "3fclass"},
                 {"pitch": -24,"yaw": 47,"type": "scene","text": "Second Floor Classroom ↓","sceneId": "2fclass"} // Downward arrow
@@ -110,7 +110,7 @@ const viewerHikarigaoka = pannellum.viewer('Hikarigaoka', {
         "science": {
             "title": "Science Room",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Hikarigaoka_ScienceRoom1R-1.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Hikarigaoka_ScienceRoom1R-1.jpg",
             "hotSpots": [
                 {"pitch": 0,"yaw": -50,"type": "scene","text": "Third Floor Classroom (3F)","sceneId": "3fclass"}
             ]
@@ -135,7 +135,7 @@ const viewerBunkyo = pannellum.viewer('Bunkyo', {
             "type": "equirectangular",
             "compass": true,
             "northOffset": 0,
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Bunkyo_Lobby_360.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Bunkyo_Lobby_360.jpg",
             "hotSpots": [
                 {"pitch": -10,"yaw": 72,"type": "scene","text": "Theater Room","sceneId": "theater"},
                 {"pitch": 6,"yaw": 93,"type": "scene","text": "Cafeteria","sceneId": "cafeteria"},
@@ -159,7 +159,7 @@ const viewerBunkyo = pannellum.viewer('Bunkyo', {
         "cafeteria": {
             "title": "Cafeteria",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Bunkyo_CafeteriaGalleryR-1.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Bunkyo_CafeteriaGalleryR-1.jpg",
             "hotSpots": [
                 {"pitch": -10,"yaw": -62,"type": "scene","text": "Theater Room","sceneId": "theater"},
                 {"pitch": 6,"yaw": -83,"type": "scene","text": "Entrance","sceneId": "entrance"},
@@ -171,7 +171,7 @@ const viewerBunkyo = pannellum.viewer('Bunkyo', {
         "3fclassroom": {
             "title": "Third Floor Classroom",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Bunkyo_Room1R-1.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Bunkyo_Room1R-1.jpg",
             "hotSpots": [
                 {"pitch": 8,"yaw": 55,"type": "scene","text": "Art Room","sceneId": "art"},
                 {"pitch": -12,"yaw": 140,"type": "scene","text": "Second Floor Classroom ↓","sceneId": "2fclassroom"}, // Downward arrow
@@ -181,7 +181,7 @@ const viewerBunkyo = pannellum.viewer('Bunkyo', {
         "theater": {
             "title": "Theater Room",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Bunkyo_Box_theatre2R-1.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Bunkyo_Box_theatre2R-1.jpg",
             "hotSpots": [
                 {"pitch": 0,"yaw": -70,"type": "scene","text": "Entrance","sceneId": "entrance"},
                 {"pitch": 0,"yaw": -155,"type": "scene","text": "Cafeteria","sceneId": "cafeteria"}
@@ -190,7 +190,7 @@ const viewerBunkyo = pannellum.viewer('Bunkyo', {
         "multimedia": {
             "title": "Multimedia Room",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Bunkyo_Gallery_Room_360_v1.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Bunkyo_Gallery_Room_360_v1.jpg",
             "hotSpots": [
                 {"pitch": 0,"yaw": -80,"type": "scene","text": "Cafeteria","sceneId": "cafeteria"},
                 {"pitch": 0,"yaw": -115,"type": "scene","text": "Entrance","sceneId": "entrance"}
@@ -199,7 +199,7 @@ const viewerBunkyo = pannellum.viewer('Bunkyo', {
         "art": {
             "title": "Art Room",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Bunkyo_Art_Room_360.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Bunkyo_Art_Room_360.jpg",
             "hotSpots": [
                 {"pitch": 0,"yaw": 120,"type": "scene","text": "Third Floor Classroom","sceneId": "3fclassroom"}, // Adjusted yaw
                 {"pitch": 0,"yaw": -150,"type": "scene","text": "Japanese Room", "sceneId": "japanese"} 
@@ -208,7 +208,7 @@ const viewerBunkyo = pannellum.viewer('Bunkyo', {
         "music": {
             "title": "Music Room",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Bunkyo_Music_R.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Bunkyo_Music_R.jpg",
             "hotSpots": [
                 {"pitch": 0,"yaw": -130,"type": "scene","text": "Cafeteria ↑","sceneId": "cafeteria"}, // Upward arrow
                 {"pitch": -10, "yaw": -60, "type": "scene", "text": "Entrance ↑", "sceneId": "entrance"} // Adjusted yaw and added upward arrow
@@ -217,7 +217,7 @@ const viewerBunkyo = pannellum.viewer('Bunkyo', {
         "japanese": {
             "title": "Japanese Room",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Bunkyo_WashitsuR.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Bunkyo_WashitsuR.jpg",
             "hotSpots": [
                 {"pitch": 0,"yaw": 90,"type": "scene","text": "Art Room","sceneId": "art"}
             ]
@@ -225,7 +225,7 @@ const viewerBunkyo = pannellum.viewer('Bunkyo', {
         "science": {
             "title": "Science Room",
             "type": "equirectangular",
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Bunkyo_Science_Room_360.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Bunkyo_Science_Room_360.jpg",
             "hotSpots": [
                 {"pitch": 0,"yaw": 90,"type": "scene","text": "Third Floor Classroom","sceneId": "3fclassroom"}
             ]
@@ -250,7 +250,7 @@ const viewerMeguro = pannellum.viewer('Meguro', {
             "type": "equirectangular",
             "compass": true,
             "northOffset": 0,
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Meguro_LargeRoom1R.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Meguro_LargeRoom1R.jpg",
             "hotSpots": [
                 {
                     "pitch": 0,
@@ -266,7 +266,7 @@ const viewerMeguro = pannellum.viewer('Meguro', {
             "type": "equirectangular",
             "compass": true,
             "northOffset": 0,
-            "panorama": "https://aoba-japan-international-school.github.io/-/360/images/Aoba360_Meguro_Sunflower2R.jpg",
+            "panorama": "https://aoba-japan-international-school.github.io/images/360/Aoba360_Meguro_Sunflower2R.jpg",
             "hotSpots": [
                 {
                     "pitch": 0,
